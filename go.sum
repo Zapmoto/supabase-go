@@ -1,5 +1,5 @@
-github.com/Zapmoto/postgrest-go v0.1.0 h1:IkHDgWWAGzl5UrTiRL+EfYUGTYb9bc90sxjutv4NNdc=
-github.com/Zapmoto/postgrest-go v0.1.0/go.mod h1:qqJeoa8bil8EmieU0zuX0ovTyDtABzSQAXVEJgbD32Y=
+github.com/Zapmoto/postgrest-go v0.1.1 h1:C+kA0QcEW67bZHfcwJW8xh9cljcGgpvs4qAulWPbywA=
+github.com/Zapmoto/postgrest-go v0.1.1/go.mod h1:qqJeoa8bil8EmieU0zuX0ovTyDtABzSQAXVEJgbD32Y=
 github.com/google/go-cmp v0.5.2 h1:X2ev0eStA3AbceY54o37/0PQ/UWqKEiiO2dKL5OPaFM=
 github.com/google/go-cmp v0.5.2/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-querystring v1.1.0 h1:AnCroh3fv4ZBgVIf1Iwtovgjaw/GiKJo8M8yD/fhyJ8=
