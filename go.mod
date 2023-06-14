@@ -7,4 +7,4 @@ require (
 	github.com/nedpals/postgrest-go v0.1.3
 )
 
-replace github.com/nedpals/postgrest-go => github.com/Zapmoto/postgrest-go v3.2.1
+replace github.com/nedpals/postgrest-go => github.com/Zapmoto/postgrest-go v0.0.0
