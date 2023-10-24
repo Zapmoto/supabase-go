@@ -242,13 +242,13 @@ const (
 	defaultLimit            = 100
 	defaultOffset           = 0
 	defaultFileCacheControl = "3600"
-	defaultFileContent      = "text/pain;charset=UTF-8"
+	defaultFileContent      = "text/plain;charset=UTF-8"
 	defaultFileUpsert       = false
 	defaultSortColumn       = "name"
 	defaultSortOrder        = "asc"
 )
 
-func (f *file) UploadOrUpdate(path string, data io.Reader, update bool) FileResponse {
+func (f *file) UploadOrUpdate(path string, data io.Reader, update bool,  fileContent string) FileResponse {
 	body := bufio.NewReader(data)
 	_path := removeEmptyFolder(f.BucketId + "/" + path)
 	client := &http.Client{}
@@ -274,10 +274,10 @@ func (f *file) UploadOrUpdate(path string, data io.Reader, update bool) FileResp
 
 	injectAuthorizationHeader(req, f.storage.client.apiKey)
 	req.Header.Set("cache-control", defaultFileCacheControl)
-	req.Header.Set("content-type", defaultFileContent)
+	req.Header.Set("content-type", fileContent)
 	req.Header.Set("x-upsert", strconv.FormatBool(defaultFileUpsert))
 	if !update {
-		req.Header.Set("content-type", defaultFileContent)
+		req.Header.Set("content-type", fileContent)
 	}
 
 	res, err = client.Do(req)
@@ -300,12 +300,12 @@ func (f *file) UploadOrUpdate(path string, data io.Reader, update bool) FileResp
 
 // Update updates a file object in a storage bucket
 func (f *file) Update(path string, data io.Reader) FileResponse {
-	return f.UploadOrUpdate(path, data, true)
+	return f.UploadOrUpdate(path, data, true, defaultFileContent)
 }
 
 // Upload uploads a file object to a storage bucket
-func (f *file) Upload(path string, data io.Reader) FileResponse {
-	return f.UploadOrUpdate(path, data, false)
+func (f *file) Upload(path string, data io.Reader, fileContent string) FileResponse {
+	return f.UploadOrUpdate(path, data, false, fileContent)
 }
 
 // Move moves a file object
@@ -479,7 +479,7 @@ func (f *file) Copy(fromPath, toPath string) FileResponse {
 		"destintionKey": toPath,
 	})
 
-	reqURL := fmt.Sprintf("%s/%s/object/copy", f.storage.client.BaseURL, StorageEndpoint, f.BucketId)
+	reqURL := fmt.Sprintf("%s/%s/%s/object/copy", f.storage.client.BaseURL, StorageEndpoint, f.BucketId)
 	req, err := http.NewRequest(http.MethodPost, reqURL, bytes.NewBuffer(_json))
 	if err != nil {
 		panic(err)
