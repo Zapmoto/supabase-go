@@ -350,3 +350,21 @@ func generatePKCEParams() (*PKCEParams, error) {
 		Verifier:        verifier,
 	}, nil
 }
+
+func (a *Auth) DeleteUser(ctx context.Context, userID string) error {
+	reqURL := fmt.Sprintf("%s/%s/admin/users/%s", a.client.BaseURL, AuthEndpoint, userID)
+	fmt.Println(reqURL)
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, reqURL, nil)
+	if err != nil {
+		return err
+	}
+
+
+	injectAuthorizationHeader(req, a.client.apiKey)
+	req.Header.Set("Content-Type", "application/json")
+	if err = a.client.sendRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
