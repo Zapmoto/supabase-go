@@ -20,3 +20,17 @@ func TestDeleteUser(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestGetUserFromEmail(t *testing.T) {
+	t.Skip()
+	godotenv.Load(".env")
+	url := os.Getenv("SUPABASE_URL")
+	serviceRole := os.Getenv("SUPABASE_SERVICE_ROLE")
+	client := CreateClient(url, serviceRole)
+
+	user, err := client.Auth.GetUserFromEmail(context.Background(), "hunter@zapmoto.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Fatal(user.ID)
+}

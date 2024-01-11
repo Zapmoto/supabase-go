@@ -368,3 +368,28 @@ func (a *Auth) DeleteUser(ctx context.Context, userID string) error {
 
 	return nil
 }
+
+
+
+func (a *Auth) GetUserFromEmail(ctx context.Context, email string) (User, error) {
+	reqURL := fmt.Sprintf("%s/%s/admin/users?page=1&per_page=10000", a.client.BaseURL, AuthEndpoint)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, reqURL, nil)
+	if err != nil {
+		return User{}, err
+	}
+fmt.Println(reqURL)
+	injectAuthorizationHeader(req, a.client.apiKey)
+	req.Header.Set("Content-Type", "application/json")
+	res := struct{Users []User `json:"users"`}{}
+	if err := a.client.sendRequest(req, &res); err != nil {
+		return User{}, err
+	}
+
+	for _, user := range res.Users {
+		if user.Email == email {
+			return user, nil
+		}
+	}
+
+	return User{}, fmt.Errorf("user not found")
+}
