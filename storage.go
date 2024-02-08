@@ -354,6 +354,8 @@ func (f *file) CreatSignedUrl(filePath string, expiresIn int) (SignedUrlResponse
 	if err != nil {
 		return SignedUrlResponse{}, err
 	}
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("apikey", f.storage.client.apiKey)
 
 	injectAuthorizationHeader(req, f.storage.client.apiKey)
 
@@ -361,6 +363,9 @@ func (f *file) CreatSignedUrl(filePath string, expiresIn int) (SignedUrlResponse
 	res, err := client.Do(req)
 	if err != nil {
 		return SignedUrlResponse{}, err
+	}
+	if res.StatusCode != 200 {
+		return SignedUrlResponse{}, fmt.Errorf("failed to create signed url: %d", res.StatusCode)
 	}
 
 	body, err := io.ReadAll(res.Body)
@@ -372,7 +377,7 @@ func (f *file) CreatSignedUrl(filePath string, expiresIn int) (SignedUrlResponse
 	if err := json.Unmarshal(body, &response); err != nil {
 		return SignedUrlResponse{}, err
 	}
-	response.SignedUrl = f.storage.client.BaseURL + response.SignedUrl
+	response.SignedUrl = f.storage.client.BaseURL + "/storage/v1" + response.SignedUrl
 
 	return response, nil
 }
