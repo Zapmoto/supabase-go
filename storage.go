@@ -455,6 +455,8 @@ func (f *file) List(queryPath string, options FileSearchOptions) ([]FileObject, 
 		return []FileObject{},err
 	}
 
+	req.Header.Set("Content-Type", "application/json")
+
 	injectAuthorizationHeader(req, f.storage.client.apiKey)
 
 	client := &http.Client{}
