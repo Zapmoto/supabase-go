@@ -392,7 +392,7 @@ func (f *file) GetPublicUrl(filePath string) SignedUrlResponse {
 // Remove deletes a file object
 func (f *file) Remove(filePaths []string) (FileResponse, error) {
 	_json, _ := json.Marshal(map[string]interface{}{
-		"prefixex": filePaths,
+		"prefixes": filePaths,
 	})
 
 	reqURL := fmt.Sprintf("%s/%s/object/%s", f.storage.client.BaseURL, StorageEndpoint, f.BucketId)
